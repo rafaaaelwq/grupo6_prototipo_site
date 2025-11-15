@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Site Interativo de Turismo Local">
+    <title>Site Interativo de Turismo Local - trabalho de programação.</object></title>
+    <style>
+        /* styles.css */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #1ab579;
+            color: rgba(81, 80, 80, 0.968);
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        nav {
+            margin-top: 20px;
+        }
+        nav a {
+            color: rgb(83, 80, 80);
+            text-align: right;
+            margin: 0 6px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;}
+
+        .filters {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .filters select, .filters button {
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Descubra os Melhores Pontos Turísticos e Restaurantes</h1>
+    </header>
+
+        <nav>
+            <a href="parte_eventos.html">Eventos</a>
+            <a href="parte_pontos_turisticos.html">Pontos Turísticos</a>
+            <a href="parte_restaurantes.html">Restaurantes</a>
+            
+        </nav>
+        </select>
+    
+    <div id="map"></div>
+
+    <footer>
+        <p>&copy; 2025 Site de Turismo Local - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        let map;
+        const locations = [
+            { type: "tourist", name: "Praça Central", lat: -27.095, lng: -52.611, description: "Um ponto turístico histórico." },
+            { type: "restaurant", name: "Restaurante do Barba", lat: -27.091, lng: -52.610, description: "Restaurante especializado em churrasco." },
+            { type: "event", name: "Festival Gastronômico", lat: -27.097, lng: -52.612, description: "Evento anual de culinária local." }
+        ];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -27.095, lng: -52.611 },
+                zoom: 13,
+            });
+
+            locations.forEach(location => {
+                new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.name
+                });
+            });
+        }
+
+        function applyFilter() {
+            const filterValue = document.getElementById("typeFilter").value;
+            let filteredLocations = locations;
+            
+            if (filterValue !== "all") {
+                filteredLocations = locations.filter(location => location.type === filterValue);
+            }
+
+            clearMarkers();
+            filteredLocations.forEach(location => {
+                new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.name
+                });
+            });
+        }
+
+        function clearMarkers() {
+            const markers = map.getMarkers();
+            markers.forEach(marker => marker.setMap(null));
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap&v=weekly" async></script>
+
+</body>
+</html>
